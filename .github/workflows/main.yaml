@@ -3,7 +3,7 @@ on:
   release:
     types: [published]
 jobs:
-  eslint_npm_publish:
+  build:
     runs-on: ubuntu-latest
     env:
       NPM_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_NPM_TOKEN }}
