@@ -9,8 +9,8 @@ on:
 jobs:
   eslint_npm_publish:
     runs-on: ubuntu-latest
-    env:
-      NPM_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_NPM_TOKEN }}
+    # env:
+    #   NPM_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_NPM_TOKEN }}
     steps:
       - name: Check if release type is valid
         if: github.event.inputs.release-type != 'patch' && github.event.inputs.release-type != 'minor' && github.event.inputs.release-type != 'major' && github.event.inputs.release-type != 'prepatch' && github.event.inputs.release-type != 'preminor' && github.event.inputs.release-type != 'premajor' && github.event.inputs.release-type != 'prerelease'
@@ -41,12 +41,12 @@ jobs:
       # Bump package version
       # Use tag latest
       - name: Bump release version
-        # echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
         # export NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)
+        # export NEW_VERSION=$(pnpm version $RELEASE_TYPE)
+        # echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
         if: startsWith(github.event.inputs.release-type, 'pre') != true
         run: |
-          export NEW_VERSION=$(pnpm version $RELEASE_TYPE)
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
           echo "RELEASE_TAG=latest" >> $GITHUB_ENV
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
@@ -54,18 +54,18 @@ jobs:
       # Bump package pre-release version
       # Use tag beta for pre-release versions
       - name: Bump pre-release version
-        # echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
         # export NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)
+        # export NEW_VERSION=$(pnpm version patch)
+        # echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
         if: startsWith(github.event.inputs.release-type, 'pre')
         run: |
-          export NEW_VERSION=$(pnpm version patch)
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "NEW_VERSION=$(npm --no-git-tag-version --preid=beta version $RELEASE_TYPE)" >> $GITHUB_ENV
           echo "RELEASE_TAG=beta" >> $GITHUB_ENV
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
 
       # Update changelog unreleased section with new version
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Update changelog
         uses: superfaceai/release-changelog-action@v1
         with:
@@ -81,15 +81,12 @@ jobs:
           git commit -m "chore: release ${{ env.NEW_VERSION }}"
           git tag ${{ env.NEW_VERSION }}
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      # - name: Install dependencies
+      #   run: pnpm install --frozen-lockfile
 
       - name: Publish to npm
         shell: bash
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          echo "Publishing to npm"
-          pnpm publish --access public --no-git-checks --tag ${{ env.RELEASE_TAG }}
+        run: pnpm publish --access public --no-git-checks --tag ${{ env.RELEASE_TAG }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_NPM_TOKEN }}
 
@@ -100,24 +97,24 @@ jobs:
         run: |
           git push origin && git push --tags
 
-      # # Read version changelog
-      # - uses: actions/checkout@v2
-      # - name: Get version changelog
-      #   id: get-changelog
-      #   uses: superfaceai/release-changelog-action@v1
-      #   with:
-      #     path-to-changelog: CHANGELOG.md
-      #     version: ${{ env.NEW_VERSION }}
-      #     operation: read
-      # - name: Log changelog
-      #   run: echo ${{ steps.get-changelog.outputs.changelog }}
+      # Read version changelog
+      - uses: actions/checkout@v4
+      - name: Get version changelog
+        id: get-changelog
+        uses: superfaceai/release-changelog-action@v1
+        with:
+          path-to-changelog: CHANGELOG.md
+          version: ${{ env.NEW_VERSION }}
+          operation: read
+      - name: Log changelog
+        run: echo ${{ steps.get-changelog.outputs.changelog }}
 
-      # # Update GitHub release with changelog
-      # - name: Update GitHub release documentation
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     tag_name: ${{ env.NEW_VERSION }}
-      #     body: ${{ steps.get-changelog.outputs.changelog }}
-      #     prerelease: ${{ startsWith(github.event.inputs.release-type, 'pre') }}
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_GITHUB_TOKEN }}
+      # Update GitHub release with changelog
+      - name: Update GitHub release documentation
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.NEW_VERSION }}
+          body: ${{ steps.get-changelog.outputs.changelog }}
+          prerelease: ${{ startsWith(github.event.inputs.release-type, 'pre') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_GITHUB_TOKEN }}
