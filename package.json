@@ -4,9 +4,6 @@
   "description": "ESLint shared config used by projects",
   "main": "base.js",
   "license": "MIT",
-  "scripts": {
-    "prepush": "node checkVersion.js"
-  },
   "keywords": [
     "eslint",
     "eslint-config",

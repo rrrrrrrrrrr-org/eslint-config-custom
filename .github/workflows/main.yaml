@@ -1,8 +1,10 @@
 name: Eslint NPM Publish
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      release-type:
+        description: 'Release type (one of): patch, minor, major, prepatch, preminor, premajor, prerelease'
+        required: true
 
 jobs:
   eslint_npm_publish:
