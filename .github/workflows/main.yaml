@@ -46,6 +46,7 @@ jobs:
         if: startsWith(github.event.inputs.release-type, 'pre') != true
         run: |
           export NEW_VERSION=$(pnpm version $RELEASE_TYPE)
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           echo "RELEASE_TAG=latest" >> $GITHUB_ENV
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
@@ -58,6 +59,7 @@ jobs:
         if: startsWith(github.event.inputs.release-type, 'pre')
         run: |
           export NEW_VERSION=$(pnpm version patch)
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           echo "RELEASE_TAG=beta" >> $GITHUB_ENV
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
