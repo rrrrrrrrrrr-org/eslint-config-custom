@@ -44,6 +44,7 @@ jobs:
         if: startsWith(github.event.inputs.release-type, 'pre') != true
         run: |
           pnpm version $RELEASE_TYPE
+          git push origin
           echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
           echo "RELEASE_TAG=latest" >> $GITHUB_ENV
         env:
@@ -55,6 +56,7 @@ jobs:
         if: startsWith(github.event.inputs.release-type, 'pre')
         run: |
           pnpm version patch
+          git push origin
           echo "NEW_VERSION=$(npm --no-git-tag-version --preid=beta version $RELEASE_TYPE
           echo "RELEASE_TAG=beta" >> $GITHUB_ENV
         env:
