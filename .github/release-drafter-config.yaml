@@ -1,9 +1,9 @@
 name-template: 'v$NEXT_MINOR_VERSION'
 tag-template: 'v$NEXT_MINOR_VERSION'
 categories:
-  - title: '🚀 Features'
+  - title: '🚀 Feature'
     label: 'enhancement'
-  - title: '🐛 Hotfixes'
+  - title: '🐛 Bug Fixes'
     label: 'bug'
   - title: 'ETC'
     label: 'documentation'
