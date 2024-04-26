@@ -1,6 +1,6 @@
 {
   "name": "@rrrrrrrrrrr/eslint-config-custom",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "ESLint shared config used by projects",
   "main": "base.js",
   "license": "MIT",
