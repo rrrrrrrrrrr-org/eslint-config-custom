@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [0.0.1](https://github.com/rrrrrrrrrrr-org/eslint-config-custom/compare/v0.0.7...v0.0.1) (2024-04-30)
+### [0.0.9](https://github.com/rrrrrrrrrrr-org/eslint-config-custom/compare/v0.0.7...v0.0.9) (2024-04-30)
 
 
 ### Features
@@ -13,3 +13,8 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * version setting ([8ffa09a](https://github.com/rrrrrrrrrrr-org/eslint-config-custom/commit/8ffa09a03cca04485c9e91c788baddf81f1c6014))
+
+
+### Others
+
+* **release:** 0.0.1 ([da73036](https://github.com/rrrrrrrrrrr-org/eslint-config-custom/commit/da7303669fd2186548e82319ac9421a142578704))
