@@ -47,11 +47,11 @@ jobs:
       # Use tag latest
       - name: Bump release version
         # echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
+        # git push --follow-tags origin main
         if: startsWith(github.event.inputs.release-type, 'pre') != true
         run: |
           echo "RELEASE_TAG=latest" >> $GITHUB_ENV
           pnpm dlx standard-version --release-as=${{ github.event.inputs.release-type }} --releaseCommitMessageFormat="chore(release): {{currentTag}}\n[[$deployUrl]]"
-          git push --follow-tags origin main
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
 
@@ -59,11 +59,11 @@ jobs:
       # Use tag beta for pre-release versions
       - name: Bump pre-release version
         # echo "NEW_VERSION=$(npm --no-git-tag-version --preid=beta version $RELEASE_TYPE)" >> $GITHUB_ENV
+        # git push --follow-tags origin main
         if: startsWith(github.event.inputs.release-type, 'pre')
         run: |
           echo "RELEASE_TAG=beta" >> $GITHUB_ENV
           pnpm dlx standard-version --release-as=patch --releaseCommitMessageFormat="chore(release): {{currentTag}}\n[[$deployUrl]]"
-          git push --follow-tags origin main
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
           # GITHUB_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_GITHUB_TOKEN }}
