@@ -8,6 +8,8 @@ on:
 
 jobs:
   eslint_npm_publish:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     # env:
     #   NPM_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_NPM_TOKEN }}
@@ -64,6 +66,7 @@ jobs:
           git push --follow-tags origin main
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
+          # GITHUB_TOKEN: ${{ secrets.RRRRRRRRRRR_ORG_GITHUB_TOKEN }}
 
       # Push repository changes
       # - name: Push changes to repository
