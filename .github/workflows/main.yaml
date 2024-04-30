@@ -24,18 +24,18 @@ jobs:
       - name: 리포지토리 확인
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v3
+        name: pnpm setup
+        with:
+          version: latest
+          run_install: false
+
       - name: Node.js 설치
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
           cache: pnpm
           registry-url: https://registry.npmjs.org
-
-      - uses: pnpm/action-setup@v3
-        name: pnpm 설치
-        with:
-          version: latest
-          run_install: false
 
       - name: 릴리즈 커밋용 git config 수정
         run: |
